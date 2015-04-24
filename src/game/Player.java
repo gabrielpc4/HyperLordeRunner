@@ -1,9 +1,11 @@
 package game;
 
+import windows.GameManager.Direction;
+import baseclasses.AnimatedSprite;
+
 @SuppressWarnings("serial")
 public class Player extends AnimatedSprite
 {
-	public static enum Direction {UP,RIGHT,DOWN,LEFT,HORIZONTAL,VERTICAL};
 	public static final int PLAYER_X_SPEED = 5;
 	public static final int PLAYER_Y_SPEED = 5;
 	public Player()

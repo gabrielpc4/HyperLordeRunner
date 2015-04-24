@@ -1,4 +1,4 @@
-package game;
+package debug;
 
 import java.awt.Point;
 

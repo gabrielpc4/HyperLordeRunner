@@ -1,5 +1,7 @@
 package game;
 
+import baseclasses.AnimatedSprite;
+
 @SuppressWarnings("serial")
 public class Enemy extends AnimatedSprite
 {

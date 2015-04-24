@@ -1,4 +1,4 @@
-package game;
+package baseclasses;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

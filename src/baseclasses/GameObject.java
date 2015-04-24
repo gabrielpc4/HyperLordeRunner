@@ -1,4 +1,4 @@
-package game;
+package baseclasses;
 
 import java.awt.Graphics;
 import java.awt.Point;

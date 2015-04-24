@@ -1,5 +1,7 @@
 package game;
 
+import baseclasses.StaticSprite;
+
 @SuppressWarnings("serial")
 public class GoldPile extends StaticSprite
 {
