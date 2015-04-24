@@ -117,7 +117,7 @@ public class AnimatedSprite extends GameObject
 			imgsFolderName += "/";
 		}
 		
-		String imgsFolderPath = "Game/images/" + imgsFolderName;
+		String imgsFolderPath = "images/" + imgsFolderName;
 		
 		File folder = new File(imgsFolderPath);
 		File[] listOfFiles = folder.listFiles();

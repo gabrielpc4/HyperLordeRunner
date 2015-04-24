@@ -37,7 +37,7 @@ public class StaticSprite extends GameObject
 	@Override
 	public void loadImg(String imgFileName)
 	{
-		String imgWithPath = "Game/images/" + imgFileName;		
+		String imgWithPath = "images/" + imgFileName;		
 		try
 		{
 			img = ImageIO.read(new File(imgWithPath));

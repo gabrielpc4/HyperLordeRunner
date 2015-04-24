@@ -178,8 +178,8 @@ public class Scenario extends Dimension
 				biggestY = currentBlock.getY();
 			}
 		}		
-		double width = biggestX - smallestX;
-		double height = biggestY - smallestY;
-		this.setSize((int)width , (int)height);
+		double width = (biggestX - smallestX) + blocks.get(0).getWidth();
+		double height = (biggestY - smallestY) + + blocks.get(0).getHeight();
+		this.setSize((int)width , (int)height);			
 	}
 }

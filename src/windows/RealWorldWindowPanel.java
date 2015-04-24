@@ -39,8 +39,9 @@ public class RealWorldWindowPanel extends JPanel implements Runnable
 	@Override
 	public void paintComponent(Graphics g) 
 	{	
-		super.paintComponents(g);		
-		//setBackground(Color.white);	
+		super.paintComponents(g);
+		g.setColor(Color.white);
+		g.fillRect(0, 0, this.getWidth(), this.getHeight());	
 		
 		for (ArrayList<GameObject> arrayOfObjects : gameObjects)
 		{
