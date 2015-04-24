@@ -84,12 +84,12 @@ public class Camera extends JPanel implements Runnable
 			int diffX = (int)(player.getCenterX() - this.getCenterX());
 			if (Math.abs(diffX) > 0)
 			{
-				cameraPositon.translate(diffX,0);				
+				cameraPositon.translate(diffX,0);
 			}		
 		}
 		else
 		{
-			if (player.getX() < this.getWidth())
+			if (cameraPositon.getX() + this.getWidth() < scenarioDimension.getWidth())
 			{
 				playerDrawPosX = player.getX();
 			}

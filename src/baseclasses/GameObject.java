@@ -34,4 +34,9 @@ public abstract class GameObject extends Rectangle
 	{
 		return (double) (this.getY() + this.getHeight());
 	}
+	
+	public Point getPosition()
+	{
+		return (new Point((int)getX(),(int)getY()));
+	}
 }

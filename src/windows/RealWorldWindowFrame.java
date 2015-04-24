@@ -17,7 +17,7 @@ public class RealWorldWindowFrame extends JFrame
 	public RealWorldWindowFrame(Player player, ArrayList<ArrayList<GameObject>> gameObjects, Scenario scenario, Camera camera)
 	{	
 		super("Real World Window");
-		setSize(1900,920);
+		setSize((int)scenario.getWidth(),(int)scenario.getHeight());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);					
 		panel = new RealWorldWindowPanel(player, gameObjects, scenario, camera);
 		add(panel);		

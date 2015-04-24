@@ -179,7 +179,7 @@ public class AnimatedSprite extends GameObject
 	
 	public void setAnimationFrame(int number)
 	{
-		if (number < imgs.size() - 1)
+		if (number <= imgs.size() - 1)
 		{
 			animationFrame = number;
 		}

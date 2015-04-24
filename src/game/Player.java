@@ -18,6 +18,40 @@ public class Player extends AnimatedSprite
 		super("player", startX, startY);		
 	}
 	
+	public Player(Block referenceBlock, Direction direction)
+	{
+		this(0,0);
+		
+		double startX = referenceBlock.getX();
+		double startY = referenceBlock.getY();
+		
+		switch (direction)
+		{			
+			case UP:
+			{
+				startY -= referenceBlock.getHeight();
+			}break;
+			case RIGHT:
+			{
+				startX += referenceBlock.getWidth();
+			}break;
+			case DOWN:
+			{
+				startY += referenceBlock.getHeight();
+			}break;
+			case LEFT:
+			{
+				startX -= referenceBlock.getWidth();
+			}break;
+			default:
+			{
+				
+			}break;
+		}
+		
+		this.translate((int)startX, (int)startY);				
+	}
+	
 	public void move(Direction direction)
 	{
 		switch (direction)

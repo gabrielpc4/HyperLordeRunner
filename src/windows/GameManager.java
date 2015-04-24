@@ -45,7 +45,7 @@ public class GameManager extends JPanel implements Runnable
 					
 		scenario = new Scenario();
 				
-		player = new Player();
+		player = new Player(300,300);
 		enemies = new ArrayList<GameObject>();
 		enemies.add(new Enemy(100,100));
 		enemies.add(new Enemy(200,200));
