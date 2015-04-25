@@ -1,6 +1,8 @@
 package baseclasses;
 
 
+import game.Scenario;
+
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -42,11 +44,11 @@ public class StaticSprite extends GameObject
 		
 		switch (OBJECT_TYPE)
 		{
-			case (game.Scenario.GOLD_PILES):
+			case (Scenario.GOLD_PILE):
 			{				
 				loadImg("gold.png");
 			}break;
-			case (game.Scenario.LADDERS):
+			case (Scenario.LADDER):
 			{
 				loadImg("ladder.png");
 			}break;

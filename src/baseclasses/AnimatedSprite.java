@@ -177,7 +177,7 @@ public class AnimatedSprite extends GameObject
 		}		
 	}
 			
-	public void move()
+	protected void move()
 	{
 		this.translate(this.getSpeedX(), this.getSpeedY());
 	}

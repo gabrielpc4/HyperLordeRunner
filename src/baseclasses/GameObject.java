@@ -15,6 +15,11 @@ public abstract class GameObject extends Rectangle
 		this(0,0);
 	}
 	
+	public GameObject(GameObject object)
+	{
+		this(object.getX(),object.getY() - object.getHeight());			
+	}	
+	
 	public GameObject(double startX, double startY)
 	{
 		this(startX,startY, game.Scenario.NONE);
@@ -23,8 +28,13 @@ public abstract class GameObject extends Rectangle
 	public GameObject(double startX, double startY, int OBJECT_TYPE)
 	{
 		super(new Point((int)startX, (int)startY));
-		this.setType(OBJECT_TYPE);
+		this.type = OBJECT_TYPE;
 	}
+	
+	public void draw(Graphics g)
+	{		
+		draw(this.getX(), this.getY(), g);
+	}	
 	
 	public void draw(double x, double y, Graphics g)
 	{
@@ -38,18 +48,17 @@ public abstract class GameObject extends Rectangle
 		}
 	}
 	
-	public void draw(Graphics g)
-	{		
-		draw(this.getX(), this.getY(), g);
-	}
-	
-	public GameObject(GameObject object)
+	public double getBottomY()
 	{
-		this(object.getX(),object.getY() - object.getHeight());			
+		return (double) (this.getY() + this.getHeight());
 	}
 	
-	public abstract void loadImg(String file);
 	public abstract BufferedImage getImg();
+
+	public Point getPosition()
+	{
+		return (new Point((int)getX(),(int)getY()));
+	}
 	
 	public Rectangle getRect()
 	{
@@ -61,19 +70,27 @@ public abstract class GameObject extends Rectangle
 		return (double) (this.getX() + this.getWidth());
 	}
 	
-	public double getBottomY()
-	{
-		return (double) (this.getY() + this.getHeight());
-	}
-	
-	public Point getPosition()
-	{
-		return (new Point((int)getX(),(int)getY()));
-	}
-
 	public int getType() 
 	{
 		return type;
+	}
+	
+	public abstract void loadImg(String file);
+	
+	public void setCenter(double x, double y)
+	{
+		setCenterX(x);
+		setCenterY(y);
+	}
+	
+	public void setCenterX(double x)
+	{
+		setX(x - (this.getWidth()/2.0));
+	}
+	
+	public void setCenterY(double y)
+	{
+		setY(y - (this.getHeight()/2.0));
 	}
 	
 	public void setX(double x)
@@ -84,10 +101,5 @@ public abstract class GameObject extends Rectangle
 	public void setY(double y)
 	{
 		this.setLocation((int)this.getX(), (int)y);
-	}
-
-	public void setType(int type) 
-	{
-		this.type = type;
 	}
 }

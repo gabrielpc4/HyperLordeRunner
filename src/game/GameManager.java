@@ -1,11 +1,7 @@
 /**
  * 
  */
-package windows;
-
-import game.Enemy;
-import game.Player;
-import game.Scenario;
+package game;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -13,6 +9,10 @@ import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
+import windows.Camera;
+import windows.RealWorldWindowFrame;
+import baseclasses.Constants;
+import baseclasses.Constants.Direction;
 import baseclasses.GameObject;
 import baseclasses.StaticSprite;
 import listeners.MyKeyListener;
@@ -21,20 +21,16 @@ import listeners.MyKeyListener;
 @SuppressWarnings("serial")
 public class GameManager extends JPanel implements Runnable
 {	
-	private Camera camera;
-	public static enum Direction {UP,RIGHT,DOWN,LEFT,HORIZONTAL,VERTICAL, NONE};	
+	private Camera camera;	
 	private ArrayList<GameObject> enemies;
-	ArrayList<GameObject> gameObjects;
+	private ArrayList<GameObject> gameObjects;
 	private Player player;
 	private MyKeyListener myKeyListener;
 	private Scenario scenario;
 	private Thread thread;
 	@SuppressWarnings("unused")
 	private RealWorldWindowFrame realWorldWindowFrame;
-	public static final int THREAD_SLEEP_TIME = 3;
-	public static final int ENEMY = 4;
-	public static final int PLAYER = 5;
-	
+	private StaticSprite emptyObject;
 	
 	public GameManager()
 	{
@@ -72,16 +68,41 @@ public class GameManager extends JPanel implements Runnable
 	
 		myKeyListener = new MyKeyListener(player);
 		addKeyListener(myKeyListener);
-	
-	
+		
+		emptyObject = new StaticSprite(game.Scenario.NONE, 0.0 ,0.0);
+		
 		this.setFocusable(true);		
 	}		
 	
+	public boolean areColliding(Rectangle object1, Rectangle object2) 
+	{
+		return (object1.intersects(object2));		
+	}
+	
 	public void checkCollisions()
 	{
-		player.setObjectUnder(new StaticSprite(game.Scenario.NONE, 0.0 ,0.0));
-		player.setObjectCollidingWith(new StaticSprite(game.Scenario.NONE, 0.0 ,0.0));
+		player.setObjectUnder(emptyObject);
+		player.setObjectCollidingWith(emptyObject);
 		
+		
+		for (GameObject pole: scenario.getPoles())
+		{		
+			if (areColliding(player, pole))
+			{
+				player.setObjectCollidingWith(pole);
+				
+				if (player.getCenterY() > pole.getCenterY() && player.getX() > pole.getX())
+				{
+					player.grabPole(true);					
+				}
+			}					
+		}
+		
+		if (player.getObjectCollidingWith().getType() != Scenario.POLE)
+		{
+			player.grabPole(false);
+		}
+				
 		for (GameObject ladder: scenario.getLadders())
 		{
 			if (areColliding(player.getRectUnder(), ladder))
@@ -109,44 +130,44 @@ public class GameManager extends JPanel implements Runnable
 				if (player.getBottomY() >= block.getY() || player.getY() >= block.getBottomY())
 				{
 					// Player at the top of the block
-					if( player.getBottomY() > block.getY())
+					if( player.getBottomY() > block.getY() - 1)
 					{			
 						if (player.isMovingDirection(Direction.DOWN))
 						{
 							player.setSpeedY(0);
-							player.setY(block.getY() - player.getHeight());
+							player.setY(block.getY() - player.getHeight() - 1);
 						}						
 					}
 					// Player at the bottom of the block
-					if (player.getY() > block.getBottomY())
+					if (player.getY() > block.getBottomY() + 1)
 					{
 						if (player.isMovingDirection(Direction.UP))
 						{
 							player.setSpeedY(0);
-							player.setY(block.getBottomY());
+							player.setY(block.getBottomY() + 1);
 						}
 					}
 					// Player at the right of the block
 					if (player.getX() <= block.getRightX())
 					{
-						if (player.getX() <= block.getRightX())
+						if (player.getX() <= block.getRightX() + 1)
 						{
 							if (player.isMovingDirection(Direction.LEFT))
 							{				
 								player.setSpeedX(0);
-								player.setX(block.getRightX());
+								player.setX(block.getRightX() + 1);
 							}
 						}
 					}
 					// Player at the left of the block
 					if (player.getRightX() >= block.getX())
 					{
-						if (player.getRightX() > block.getX())
+						if (player.getRightX() > block.getX() - 1)
 						{							
 							if (player.isMovingDirection(Direction.RIGHT))
 							{
 								player.setSpeedX(0);
-								player.setX(block.getX() - player.getWidth());
+								player.setX(block.getX() - player.getWidth() - 1);
 							}
 						}
 					}						
@@ -160,29 +181,30 @@ public class GameManager extends JPanel implements Runnable
 		return scenario;
 	}		
 	
-	
-	
 	private void moveAll()
 	{		
 		player.move();	
 		
-		if (player.isClimbing() &&  (player.getObjectCollidingWith().getType() != game.Scenario.LADDERS))
+		if (player.isClimbing())
 		{
-			if (player.getObjectUnder().getType() != game.Scenario.LADDERS)
-			player.stopClimbing();
+			if (player.getObjectCollidingWith().getType() != Scenario.LADDER
+				&& player.getObjectUnder().getType() != Scenario.LADDER)			
+			{
+				player.stopClimbing();
+			}		
 		}
 	}
 	
 	private void physics()
 	{
-		if (player.getObjectUnder().getType() == game.Scenario.NONE)
+		if (player.getObjectUnder().getType() == game.Scenario.NONE && player.isGrabbingPole() == false)
 		{
 			player.fall(true);
 		}
 		else
 		{
 			player.fall(false);			
-		}						
+		}			
 	}
 	
 	
@@ -192,7 +214,7 @@ public class GameManager extends JPanel implements Runnable
 		{					
 			try
 			{
-				Thread.sleep(THREAD_SLEEP_TIME);
+				Thread.sleep(Constants.THREAD_SLEEP_TIME);
 				moveAll();
 				physics();
 				checkCollisions();
@@ -208,10 +230,5 @@ public class GameManager extends JPanel implements Runnable
 	{
 		thread = new Thread(this);
 		thread.start();
-	}
-
-	public boolean areColliding(Rectangle object1, Rectangle object2) 
-	{
-		return (object1.intersects(object2));		
 	}
 }

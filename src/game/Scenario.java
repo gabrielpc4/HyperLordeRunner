@@ -5,109 +5,120 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import baseclasses.Constants.Direction;
 import baseclasses.GameObject;
 import baseclasses.StaticSprite;
 import windows.MainWindowApplet;
-import windows.GameManager.Direction;
 
 @SuppressWarnings("serial")
 public class Scenario extends Dimension
 {
 	ArrayList<ArrayList<GameObject>> scenarioObjects;
 	public static final int NONE		= -1;
-	public static final int BLOCKS 		= 0;
-	public static final int GOLD_PILES	= 1;
-	public static final int LADDERS		= 2;
+	public static final int BLOCK 		= 0;
+	public static final int GOLD_PILE	= 1;
+	public static final int LADDER		= 2;
 	public static final int POLE		= 3;
-		
-	public ArrayList<GameObject> debug = new ArrayList<GameObject>();
 	
 	public Scenario()
 	{
 		super(MainWindowApplet.WINDOW_WIDTH, MainWindowApplet.WINDOW_HEIGHT);
 	
 		scenarioObjects = new ArrayList<ArrayList<GameObject>>();
-		for( int i = BLOCKS; i <= POLE; i++)
+		for( int i = BLOCK; i <= POLE; i++)
 		{
 			scenarioObjects.add(new ArrayList<GameObject>());
-		}	
-		
-		// Borders
-		addBlock(false, new Point(0,0), 17, Direction.DOWN);
-		addBlock(false, getLastAddedBlock(), 20, Direction.RIGHT);
-		addBlock(false, getLastAddedBlock(), 17, Direction.UP);
-				// Ground
-		addBlock(true, getBlock(16), 19, Direction.RIGHT);
-		
-
-		// Bottom right blocks
-		addBlock(true, getLastAddedBlock(), 3, Direction.UP);
-		addBlock(true, getLastAddedBlock(), 4, Direction.LEFT);
-		addBlock(true, getLastAddedBlock(), 1, Direction.DOWN);
-		addBlock(true, getLastAddedBlock(), 1, Direction.RIGHT);
-		addBlock(true, getBlock(74), 3, Direction.LEFT);
-		
-		// Bottom left blocks
-		addBlock(true, getBlock(55), 6, Direction.UP);
-		addBlock(true, getLastAddedBlock(), 5, Direction.RIGHT);
-		addBlock(true, getLastAddedBlock(), 4, Direction.DOWN);
-		addBlock(true, getBlock(61), 2, Direction.UP);
-		addBlock(true, getBlock(87), 3, Direction.RIGHT);
-		addBlock(true, getBlock(88), 3, Direction.RIGHT);
-		
-		// Upper left blocks
-		addBlock(true, getBlock(92), 4, Direction.UP);
-		addBlock(true, getBlock(110), 1, Direction.LEFT);
-		addBlock(true, getBlock(112), 1, Direction.LEFT);
-		
-		
-		// Middle right blocks
-		addBlock(false, getBlock(43), 4, Direction.LEFT, 0, 1);		
-		addBlock(true, getBlock(43), 4, Direction.LEFT, 1, 1);
-		addBlock(true, getBlock(96), 1, Direction.RIGHT, 3, 0);
-		addBlock(true, getLastAddedBlock(), 1, Direction.RIGHT);
-		
-		// Upper right blocks
-		addBlock(true, getBlock(46), 8, Direction.LEFT);
-		addBlock(true, getBlock(47), 1, Direction.LEFT);
-		addBlock(true, getLastAddedBlock(), 3, Direction.LEFT, 1, 0);
-		addBlock(true, getLastAddedBlock(), 1, Direction.LEFT, 1, 0);
-		addBlock(true, getBlock(48), 4, Direction.LEFT);
-		addBlock(true, getLastAddedBlock(), 1, Direction.LEFT, 1, 0);
-		
-		// Floating top center blocks
-		addBlock(true, getBlock(137), 3, Direction.LEFT, 3, 0);
-		
-		
-		// GOLD PILES		
-		addGoldPile(getBlock(56),3, Direction.RIGHT);
-		addGoldPile(getBlock(60));
-		addGoldPile(getBlock(106),2, Direction.RIGHT);
-		addGoldPile(getBlock(84));
-		addGoldPile(getBlock(91));
-		addGoldPile(getBlock(113));
-		addGoldPile(getBlock(115),4, Direction.LEFT, 0 , 1);
-		addGoldPile(getBlock(123));
-		addGoldPile(getBlock(123));
-		addGoldPile(getBlock(126));
-		addGoldPile(getBlock(130));
-		addGoldPile(getBlock(144));
+		}					
+		createScenario(0);
+	}
 	
-		// LADDERS
-		addLadder(getBlock(62), 2);
-		addLadder(getBlock(102), 4);
-		addLadder(getBlock(93), 4);
-		addLadder(getBlock(114), 2);
-		addLadder(getBlock(59), 3);
-		
-		addPole(getLadder(getBlock(4), Direction.RIGHT),16,Direction.RIGHT);
-		
+	private void createScenario(int scenarioNumber)
+	{
+		switch (scenarioNumber)
+		{
+			case 0:
+			{
+				// Borders
+				addBlock(false, new Point(0,0), 17, Direction.DOWN);
+				addBlock(false, getLastAddedBlock(), 20, Direction.RIGHT);
+				addBlock(false, getLastAddedBlock(), 17, Direction.UP);
+						// Ground
+				addBlock(true, getBlock(16), 19, Direction.RIGHT);
+				
+	
+				// Bottom right blocks
+				addBlock(true, getLastAddedBlock(), 3, Direction.UP);
+				addBlock(true, getLastAddedBlock(), 4, Direction.LEFT);
+				addBlock(true, getLastAddedBlock(), 1, Direction.DOWN);
+				addBlock(true, getLastAddedBlock(), 1, Direction.RIGHT);
+				addBlock(true, getBlock(74), 3, Direction.LEFT);
+				
+				// Bottom left blocks
+				addBlock(true, getBlock(55), 6, Direction.UP);
+				addBlock(true, getLastAddedBlock(), 5, Direction.RIGHT);
+				addBlock(true, getLastAddedBlock(), 4, Direction.DOWN);
+				addBlock(true, getBlock(61), 2, Direction.UP);
+				addBlock(true, getBlock(87), 3, Direction.RIGHT);
+				addBlock(true, getBlock(88), 3, Direction.RIGHT);
+				
+				// Upper left blocks
+				addBlock(true, getBlock(92), 4, Direction.UP);
+				addBlock(true, getBlock(110), 1, Direction.LEFT);
+				addBlock(true, getBlock(112), 1, Direction.LEFT);
+				
+				
+				// Middle right blocks
+				addBlock(false, getBlock(43), 4, Direction.LEFT, 0, 1);		
+				addBlock(true, getBlock(43), 4, Direction.LEFT, 1, 1);
+				addBlock(true, getBlock(96), 1, Direction.RIGHT, 3, 0);
+				addBlock(true, getLastAddedBlock(), 1, Direction.RIGHT);
+				
+				// Upper right blocks
+				addBlock(true, getBlock(46), 8, Direction.LEFT);
+				addBlock(true, getBlock(47), 1, Direction.LEFT);
+				addBlock(true, getLastAddedBlock(), 3, Direction.LEFT, 1, 0);
+				addBlock(true, getLastAddedBlock(), 1, Direction.LEFT, 1, 0);
+				addBlock(true, getBlock(48), 4, Direction.LEFT);
+				addBlock(true, getLastAddedBlock(), 1, Direction.LEFT, 1, 0);
+				
+				// Floating top center blocks
+				addBlock(true, getBlock(137), 3, Direction.LEFT, 3, 0);
+				
+				
+				// GOLD PILES		
+				addGoldPile(getBlock(56),3, Direction.RIGHT);
+				addGoldPile(getBlock(60));
+				addGoldPile(getBlock(106),2, Direction.RIGHT);
+				addGoldPile(getBlock(84));
+				addGoldPile(getBlock(91));
+				addGoldPile(getBlock(113));
+				addGoldPile(getBlock(115),4, Direction.LEFT, 0 , 1);
+				addGoldPile(getBlock(123));
+				addGoldPile(getBlock(123));
+				addGoldPile(getBlock(126));
+				addGoldPile(getBlock(130));
+				addGoldPile(getBlock(144));
+			
+				// LADDERS
+				addLadder(getBlock(62), 2);
+				addLadder(getBlock(102), 4);
+				addLadder(getBlock(93), 4);
+				addLadder(getBlock(114), 2);
+				addLadder(getBlock(59), 3);
+				
+				addPole(getLadder(getBlock(4), Direction.RIGHT),16,Direction.RIGHT);
+			}break;
+			default:
+			{
+				
+			}break;
+		}
 		updateScenarioDimensions();		
 	}
 	
 	private void addBlock(boolean destructible, GameObject referenceObject,  int howMany, Direction direction, int firstGap, int nextGaps)
 	{
-		addObject(BLOCKS, referenceObject, howMany, direction, firstGap, nextGaps);
+		addObject(BLOCK, referenceObject, howMany, direction, firstGap, nextGaps);
 		
 		for (int i = 0; i < howMany ; i++)
 		{
@@ -122,7 +133,7 @@ public class Scenario extends Dimension
 	
 	private void addBlock(boolean destructible, double startX, double startY, int howMany, Direction direction)
 	{
-		scenarioObjects.get(BLOCKS).add(new Block(startX, startY, false));
+		scenarioObjects.get(BLOCK).add(new Block(startX, startY, false));
 		if (howMany > 1)
 		{
 			addBlock(destructible, getLastAddedBlock(), howMany, direction);
@@ -146,14 +157,14 @@ public class Scenario extends Dimension
 	
 	private void addGoldPile(GameObject referenceObject, int howMany, Direction direction, int firstGap, int nextGap)
 	{
-		addObject(GOLD_PILES, referenceObject, 1, Direction.UP, firstGap, nextGap);
+		addObject(GOLD_PILE, referenceObject, 1, Direction.UP, firstGap, nextGap);
 		referenceObject = getLastAddedGoldPile();
-		addObject(GOLD_PILES, referenceObject, howMany - 1, direction, nextGap, nextGap);
+		addObject(GOLD_PILE, referenceObject, howMany - 1, direction, nextGap, nextGap);
 	}		
 	
 	private void addLadder(Block referenceBlock, int height)
 	{
-		addObject(LADDERS, referenceBlock, height, Direction.UP);
+		addObject(LADDER, referenceBlock, height, Direction.UP);
 	}	
 	
 	private void addPole(GameObject referenceObject, int length, Direction direction)
@@ -164,7 +175,7 @@ public class Scenario extends Dimension
 	private GameObject addObject(int OBJECT_TYPE, double startX, double startY)
 	{
 		GameObject newObject = null;
-		if (OBJECT_TYPE == BLOCKS)
+		if (OBJECT_TYPE == BLOCK)
 		{
 			newObject = new Block(startX,startY); 
 			getBlocks().add(newObject);
@@ -172,11 +183,11 @@ public class Scenario extends Dimension
 		else 
 		{
 			newObject = new StaticSprite(OBJECT_TYPE, startX, startY);
-			if (OBJECT_TYPE == GOLD_PILES)			
+			if (OBJECT_TYPE == GOLD_PILE)			
 			{				
 				getGoldPiles().add(newObject);
 			}
-			else if (OBJECT_TYPE == LADDERS)
+			else if (OBJECT_TYPE == LADDER)
 			{			
 				getLadders().add(newObject);
 			}
@@ -300,7 +311,7 @@ public class Scenario extends Dimension
 	
 	public ArrayList<GameObject> getBlocks()
 	{
-		return scenarioObjects.get(BLOCKS);
+		return scenarioObjects.get(BLOCK);
 	}
 	
 	public GameObject getGoldPile(int goldPileNumber)
@@ -322,7 +333,7 @@ public class Scenario extends Dimension
 	
 	public ArrayList<GameObject> getGoldPiles()
 	{
-		return scenarioObjects.get(GOLD_PILES);
+		return scenarioObjects.get(GOLD_PILE);
 	}
 	
 	public GameObject getLadder(int ladderNumber)
@@ -410,7 +421,7 @@ public class Scenario extends Dimension
 	
 	public ArrayList<GameObject> getLadders()
 	{
-		return scenarioObjects.get(LADDERS);
+		return scenarioObjects.get(LADDER);
 	}
 	
 	
@@ -484,8 +495,7 @@ public class Scenario extends Dimension
 			}		
 			double width = ((biggestX + getBlocks().get(0).getWidth())- smallestX) ;
 			double height = ((biggestY + getBlocks().get(0).getHeight()) - smallestY) ;
-			this.setSize((int)width , (int)height);			
-		
+			this.setSize((int)width , (int)height);					
 		}
 	}		
 }

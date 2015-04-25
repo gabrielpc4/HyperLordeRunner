@@ -1,5 +1,6 @@
 package windows;
 
+import game.GameManager;
 import game.Player;
 
 import java.awt.Color;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import baseclasses.Constants;
 import baseclasses.GameObject;
 
 @SuppressWarnings("serial")
@@ -154,7 +156,7 @@ public class Camera extends JPanel implements Runnable
 		{					
 			try
 			{
-				Thread.sleep(GameManager.THREAD_SLEEP_TIME);
+				Thread.sleep(Constants.THREAD_SLEEP_TIME);
 				repaint();
 			}
 			catch (InterruptedException e)

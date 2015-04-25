@@ -5,10 +5,10 @@ import game.Player;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import windows.GameManager.Direction;
+import baseclasses.Constants.Direction;
 
-
-public class MyKeyListener implements KeyListener {
+public class MyKeyListener implements KeyListener 
+{
 	private Player player;	
 	
 	public MyKeyListener(Player player) 
@@ -19,50 +19,20 @@ public class MyKeyListener implements KeyListener {
 	public void keyPressed(KeyEvent e)
 	{						
 		if (e.getKeyCode() == KeyEvent.VK_LEFT)
-		{			
-			if (player.getSpeedY() == 0)
-			{
-				player.move(Direction.LEFT);
-			}		
+		{				
+			player.move(Direction.LEFT);
 		}
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT)
 		{		
-			// Prevents the player from pressing right while holding up or down
-			if (player.getSpeedY() == 0)
-			{
-				player.move(Direction.RIGHT);
-			}				
+			player.move(Direction.RIGHT);			
 		}
 		if (e.getKeyCode() == KeyEvent.VK_UP)
-		{				
-			if (player.isClimbing())
-			{				
-				player.climbLadder(Direction.UP);							
-			}
-			else
-			{
-				if (player.getObjectCollidingWith().getType() == game.Scenario.LADDERS)
-				{					
-					player.climbLadder(Direction.UP);					
-				}
-			}					
+		{	
+			player.move(Direction.UP);
 		}		
 		if (e.getKeyCode() == KeyEvent.VK_DOWN)
 		{	
-			if (player.isClimbing())
-			{
-				player.climbLadder(Direction.DOWN);
-			}
-			else
-			{					
-				if (player.getObjectUnder().getType() == game.Scenario.LADDERS)
-				{					
-					if (player.getX() > player.getObjectUnder().getX())
-					{							
-						player.climbLadder(Direction.DOWN);							
-					}
-				}								
-			}					
+			player.move(Direction.DOWN);		
 		}		
 	}
 
@@ -74,11 +44,7 @@ public class MyKeyListener implements KeyListener {
 		}
 		else if (e.getKeyCode() == KeyEvent.VK_UP || (e.getKeyCode() == KeyEvent.VK_DOWN))
 		{
-			player.stopMoving(Direction.VERTICAL);
-			if (player.isClimbing())
-			{
-				player.pauseClimbing();
-			}
+			player.stopMoving(Direction.VERTICAL);			
 		}			
 	}
 

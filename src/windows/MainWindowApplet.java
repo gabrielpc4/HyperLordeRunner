@@ -1,5 +1,7 @@
 package windows;
 
+import game.GameManager;
+
 import java.awt.Frame;
 
 import javax.swing.JApplet;

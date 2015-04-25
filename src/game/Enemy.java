@@ -1,10 +1,9 @@
 package game;
 
-import windows.GameManager;
-import baseclasses.AnimatedSprite;
+import baseclasses.Constants;
 
 @SuppressWarnings("serial")
-public class Enemy extends AnimatedSprite
+public class Enemy extends Player
 {
 	public Enemy()
 	{		
@@ -18,6 +17,6 @@ public class Enemy extends AnimatedSprite
 
 	public Enemy(double startX, double startY)
 	{
-		super("enemy", startX, startY, GameManager.ENEMY);	
+		super("enemy", startX, startY, Constants.ENEMY);	
 	}
 }
