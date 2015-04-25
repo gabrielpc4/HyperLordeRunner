@@ -44,7 +44,6 @@ public class Player extends AnimatedSprite
 	
 	public boolean isMovingDirection(Direction direction)
 	{
-		
 		switch (direction)
 		{
 			case UP:
@@ -142,8 +141,7 @@ public class Player extends AnimatedSprite
 			{
 				setSpeedY(0);
 			}
-		}
-		
+		}	
 	}
 	
 	public void stopMoving(Direction direction)

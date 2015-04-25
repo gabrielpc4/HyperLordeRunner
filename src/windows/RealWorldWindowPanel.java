@@ -21,7 +21,7 @@ public class RealWorldWindowPanel extends JPanel implements Runnable
 	private Camera camera;
 	private MyKeyListener myKeyListener;	
 	
-	public RealWorldWindowPanel(Player player, ArrayList<GameObject> gameObjects, Scenario scenario, Camera camera, GameManager gameManager)
+	public RealWorldWindowPanel(Player player, ArrayList<GameObject> gameObjects, Scenario scenario, Camera camera)
 	{		
 		super();
 		this.player = player;
@@ -30,7 +30,7 @@ public class RealWorldWindowPanel extends JPanel implements Runnable
 		setSize((int)scenario.getWidth(), (int)scenario.getHeight());				
 		thread = new Thread(this);
 		thread.start();
-		myKeyListener = new MyKeyListener(player, gameManager);
+		myKeyListener = new MyKeyListener(player);
 		addKeyListener(myKeyListener);	
 		setFocusable(true);
 		setVisible(true); 		

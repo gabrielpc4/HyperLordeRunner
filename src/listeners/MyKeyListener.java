@@ -5,24 +5,22 @@ import game.Player;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import windows.GameManager;
 import windows.GameManager.Direction;
 
+
 public class MyKeyListener implements KeyListener {
-	private Player player;
-	private GameManager gameManager;
+	private Player player;	
 	
-	public MyKeyListener(Player player, GameManager gameManager) 
+	public MyKeyListener(Player player) 
 	{
-		this.player = player;
-		this.gameManager = gameManager;
+		this.player = player;		
 	}
 
 	public void keyPressed(KeyEvent e)
 	{						
 		if (e.getKeyCode() == KeyEvent.VK_LEFT)
 		{			
-			if (player.isFalling() == false)
+			if (player.getSpeedY() == 0)
 			{
 				player.move(Direction.LEFT);
 			}		
@@ -30,7 +28,7 @@ public class MyKeyListener implements KeyListener {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT)
 		{		
 			// Prevents the player from pressing right while holding up or down
-			if (player.isFalling() == false)
+			if (player.getSpeedY() == 0)
 			{
 				player.move(Direction.RIGHT);
 			}				

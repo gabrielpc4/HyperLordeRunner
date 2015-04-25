@@ -49,10 +49,10 @@ public class GameManager extends JPanel implements Runnable
 					
 		scenario = new Scenario();
 				
-		player = new Player(scenario.getBlock(93));
+		player = new Player(scenario.getBlock(95));
 		enemies = new ArrayList<GameObject>();
-		enemies.add(new Enemy(scenario.getBlock(134)));
-		enemies.add(new Enemy(scenario.getBlock(110)));		
+		enemies.add(new Enemy(scenario.getBlock(136)));
+		enemies.add(new Enemy(scenario.getBlock(112)));		
 					
 		gameObjects = new ArrayList<GameObject>();
 		for (ArrayList<GameObject> arrayOfObjects : scenario.getAllScenarioObjects())
@@ -61,19 +61,21 @@ public class GameManager extends JPanel implements Runnable
 			{
 				gameObjects.add(scenarioObject);
 			}		
-		}				
+		}
+		gameObjects.add(enemies.get(0));
+		gameObjects.add(enemies.get(1));
 		
 		camera = new Camera(WINDOW_WIDTH, WINDOW_HEIGHT, player, gameObjects, scenario.getSize());		
 		this.add(camera);
 		
-		realWorldWindowFrame = new RealWorldWindowFrame(player, gameObjects, scenario, camera, this);
+		realWorldWindowFrame = new RealWorldWindowFrame(player, gameObjects, scenario, camera);
 	
-		myKeyListener = new MyKeyListener(player, this);
+		myKeyListener = new MyKeyListener(player);
 		addKeyListener(myKeyListener);
 	
 	
 		this.setFocusable(true);		
-	}	
+	}		
 	
 	public void checkCollisions()
 	{
@@ -150,10 +152,7 @@ public class GameManager extends JPanel implements Runnable
 					}						
 				}
 			}
-		}
-	
-					
-								
+		}	
 	}
 	
 	public Scenario getScenario()

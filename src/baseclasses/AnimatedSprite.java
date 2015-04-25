@@ -53,7 +53,7 @@ public class AnimatedSprite extends GameObject
 	
 	public void animate()
 	{				
-		if(imgs != null)
+		if (imgs != null)
 		{
 			if (animate)
 			{
