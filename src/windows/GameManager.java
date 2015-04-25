@@ -7,12 +7,14 @@ import game.Enemy;
 import game.Player;
 import game.Scenario;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import baseclasses.GameObject;
+import baseclasses.StaticSprite;
 import listeners.MyKeyListener;
 
 
@@ -20,7 +22,7 @@ import listeners.MyKeyListener;
 public class GameManager extends JPanel implements Runnable
 {	
 	private Camera camera;
-	public static enum Direction {UP,RIGHT,DOWN,LEFT,HORIZONTAL,VERTICAL};	
+	public static enum Direction {UP,RIGHT,DOWN,LEFT,HORIZONTAL,VERTICAL, NONE};	
 	private ArrayList<GameObject> enemies;
 	ArrayList<GameObject> gameObjects;
 	private Player player;
@@ -29,7 +31,9 @@ public class GameManager extends JPanel implements Runnable
 	private Thread thread;
 	@SuppressWarnings("unused")
 	private RealWorldWindowFrame realWorldWindowFrame;
-	public static final int THREAD_SLEEP_TIME = 17;
+	public static final int THREAD_SLEEP_TIME = 3;
+	public static final int ENEMY = 4;
+	public static final int PLAYER = 5;
 	
 	
 	public GameManager()
@@ -62,19 +66,124 @@ public class GameManager extends JPanel implements Runnable
 		camera = new Camera(WINDOW_WIDTH, WINDOW_HEIGHT, player, gameObjects, scenario.getSize());		
 		this.add(camera);
 		
-		realWorldWindowFrame = new RealWorldWindowFrame(player, gameObjects, scenario, camera);
+		realWorldWindowFrame = new RealWorldWindowFrame(player, gameObjects, scenario, camera, this);
 	
-		myKeyListener = new MyKeyListener(player);
+		myKeyListener = new MyKeyListener(player, this);
 		addKeyListener(myKeyListener);
 	
 	
-		this.setFocusable(true);
+		this.setFocusable(true);		
+	}	
+	
+	public void checkCollisions()
+	{
+		player.setObjectUnder(new StaticSprite(game.Scenario.NONE, 0.0 ,0.0));
+		player.setObjectCollidingWith(new StaticSprite(game.Scenario.NONE, 0.0 ,0.0));
 		
+		for (GameObject ladder: scenario.getLadders())
+		{
+			if (areColliding(player.getRectUnder(), ladder))
+			{
+				player.setObjectUnder(ladder);
+			}		
+			
+			if (areColliding(player, ladder))
+			{
+				player.setObjectCollidingWith(ladder);
+			}					
+		}	
+
+		for (GameObject block : scenario.getBlocks())
+		{
+			if (areColliding(player.getRectUnder(), block))
+			{
+				player.setObjectUnder(block);
+			}
+			
+			if (areColliding(player, block))
+			{
+				player.setObjectCollidingWith(block);
+				// Player is at the top of the block or is a the  bottom
+				if (player.getBottomY() >= block.getY() || player.getY() >= block.getBottomY())
+				{
+					// Player at the top of the block
+					if( player.getBottomY() > block.getY())
+					{			
+						if (player.isMovingDirection(Direction.DOWN))
+						{
+							player.setSpeedY(0);
+							player.setY(block.getY() - player.getHeight());
+						}						
+					}
+					// Player at the bottom of the block
+					if (player.getY() > block.getBottomY())
+					{
+						if (player.isMovingDirection(Direction.UP))
+						{
+							player.setSpeedY(0);
+							player.setY(block.getBottomY());
+						}
+					}
+					// Player at the right of the block
+					if (player.getX() <= block.getRightX())
+					{
+						if (player.getX() <= block.getRightX())
+						{
+							if (player.isMovingDirection(Direction.LEFT))
+							{				
+								player.setSpeedX(0);
+								player.setX(block.getRightX());
+							}
+						}
+					}
+					// Player at the left of the block
+					if (player.getRightX() >= block.getX())
+					{
+						if (player.getRightX() > block.getX())
+						{							
+							if (player.isMovingDirection(Direction.RIGHT))
+							{
+								player.setSpeedX(0);
+								player.setX(block.getX() - player.getWidth());
+							}
+						}
+					}						
+				}
+			}
+		}
+	
+					
+								
+	}
+	
+	public Scenario getScenario()
+	{
+		return scenario;
 	}		
+	
+	
 	
 	private void moveAll()
 	{		
-		player.move();
+		player.move();	
+		
+		if (player.isClimbing() &&  (player.getObjectCollidingWith().getType() != game.Scenario.LADDERS))
+		{
+			if (player.getObjectUnder().getType() != game.Scenario.LADDERS)
+			player.stopClimbing();
+		}
+	}
+	
+	private void physics()
+	{
+		if (player.getObjectUnder().getType() == game.Scenario.NONE)
+		{
+			player.fall(true);
+		}
+		else
+		{
+			player.fall(false);			
+		}						
 	}
 	
 	
@@ -86,6 +195,8 @@ public class GameManager extends JPanel implements Runnable
 			{
 				Thread.sleep(THREAD_SLEEP_TIME);
 				moveAll();
+				physics();
+				checkCollisions();
 			}
 			catch (InterruptedException e)
 			{				
@@ -98,5 +209,10 @@ public class GameManager extends JPanel implements Runnable
 	{
 		thread = new Thread(this);
 		thread.start();
+	}
+
+	public boolean areColliding(Rectangle object1, Rectangle object2) 
+	{
+		return (object1.intersects(object2));		
 	}
 }

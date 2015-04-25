@@ -25,7 +25,7 @@ public class Block extends AnimatedSprite
 
 	public Block(double startX, double startY, boolean destructible)
 	{		
-		super("block", startX, startY);
+		super("block", startX, startY, Scenario.BLOCKS);
 				
 		setDestructible(destructible);		
 		freezeAnimation();

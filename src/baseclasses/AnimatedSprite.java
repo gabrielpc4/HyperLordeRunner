@@ -23,18 +23,18 @@ public class AnimatedSprite extends GameObject
 		
 	public AnimatedSprite()
 	{
-		this(0,0);
+		this(0,0, game.Scenario.NONE);
 	}
 	
-	public AnimatedSprite(String imgsFolderName, double startX, double startY)
+	public AnimatedSprite(String imgsFolderName, double startX, double startY, int OBJECT_TYPE)
 	{
-		this(startX, startY);
+		this(startX, startY, OBJECT_TYPE);
 		loadImg(imgsFolderName);		
 	}
 
-	public AnimatedSprite(double startX, double startY)
+	public AnimatedSprite(double startX, double startY, int OBJECT_TYPE)
 	{
-		super(startX, startY);		
+		super(startX, startY, OBJECT_TYPE);		
 		animate			= true;
 		animationFrame 	= 0;
 		imgs 			= null;

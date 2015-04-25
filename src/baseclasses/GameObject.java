@@ -75,6 +75,16 @@ public abstract class GameObject extends Rectangle
 	{
 		return type;
 	}
+	
+	public void setX(double x)
+	{
+		this.setLocation((int)x,(int)this.getY());
+	}
+	
+	public void setY(double y)
+	{
+		this.setLocation((int)this.getX(), (int)y);
+	}
 
 	public void setType(int type) 
 	{

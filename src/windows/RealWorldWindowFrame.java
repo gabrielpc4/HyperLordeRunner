@@ -14,14 +14,14 @@ public class RealWorldWindowFrame extends JFrame
 {
 	private RealWorldWindowPanel panel;
 	
-	public RealWorldWindowFrame(Player player, ArrayList<GameObject> gameObjects, Scenario scenario, Camera camera)
+	public RealWorldWindowFrame(Player player, ArrayList<GameObject> gameObjects, Scenario scenario, Camera camera, GameManager gameManager)
 	{	
 		super("Real World Window");
 		setSize((int)scenario.getWidth() + 17,(int)scenario.getHeight() + 40);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);					
-		panel = new RealWorldWindowPanel(player, gameObjects, scenario, camera);
+		panel = new RealWorldWindowPanel(player, gameObjects, scenario, camera, gameManager);
 		add(panel);		
 		setVisible(true);
-		//toBack();
+		toBack();
 	}
 }

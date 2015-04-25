@@ -56,8 +56,7 @@ public class StaticSprite extends GameObject
 			}break;
 			default:
 			{
-				System.err.println("Error: Informed to load image of the class " + this.getClass().getName() + " of object type: " + OBJECT_TYPE + " and it does not exists");
-				System.exit(0);
+				//System.err.println("Error: Informed to load image of the class " + this.getClass().getName() + " of object type: " + OBJECT_TYPE + " and it does not exists");				//
 			}break;
 		}
 				

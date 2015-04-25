@@ -34,71 +34,71 @@ public class Scenario extends Dimension
 		
 		// Borders
 		addBlock(false, new Point(0,0), 17, Direction.DOWN);
-		addBlock(false, getLastAddedBlock(), 19, Direction.RIGHT);
+		addBlock(false, getLastAddedBlock(), 20, Direction.RIGHT);
 		addBlock(false, getLastAddedBlock(), 17, Direction.UP);
+				// Ground
+		addBlock(true, getBlock(16), 19, Direction.RIGHT);
 		
-		// Ground
-		addBlock(true, getBlock(16), 18, Direction.RIGHT);
-		
+
 		// Bottom right blocks
 		addBlock(true, getLastAddedBlock(), 3, Direction.UP);
 		addBlock(true, getLastAddedBlock(), 4, Direction.LEFT);
 		addBlock(true, getLastAddedBlock(), 1, Direction.DOWN);
 		addBlock(true, getLastAddedBlock(), 1, Direction.RIGHT);
-		addBlock(true, getBlock(72), 3, Direction.LEFT);
+		addBlock(true, getBlock(74), 3, Direction.LEFT);
 		
 		// Bottom left blocks
-		addBlock(true, getBlock(54), 6, Direction.UP);
+		addBlock(true, getBlock(55), 6, Direction.UP);
 		addBlock(true, getLastAddedBlock(), 5, Direction.RIGHT);
 		addBlock(true, getLastAddedBlock(), 4, Direction.DOWN);
-		addBlock(true, getBlock(60), 2, Direction.UP);
-		addBlock(true, getBlock(85), 3, Direction.RIGHT);
-		addBlock(true, getBlock(86), 3, Direction.RIGHT);
+		addBlock(true, getBlock(61), 2, Direction.UP);
+		addBlock(true, getBlock(87), 3, Direction.RIGHT);
+		addBlock(true, getBlock(88), 3, Direction.RIGHT);
 		
 		// Upper left blocks
-		addBlock(true, getBlock(90), 4, Direction.UP);
-		addBlock(true, getBlock(108), 1, Direction.LEFT);
+		addBlock(true, getBlock(92), 4, Direction.UP);
 		addBlock(true, getBlock(110), 1, Direction.LEFT);
+		addBlock(true, getBlock(112), 1, Direction.LEFT);
 		
 		
 		// Middle right blocks
-		addBlock(false, getBlock(42), 4, Direction.LEFT, 0, 1);		
-		addBlock(true, getBlock(42), 4, Direction.LEFT, 1, 1);
-		addBlock(true, getBlock(94), 1, Direction.RIGHT, 2, 0);
+		addBlock(false, getBlock(43), 4, Direction.LEFT, 0, 1);		
+		addBlock(true, getBlock(43), 4, Direction.LEFT, 1, 1);
+		addBlock(true, getBlock(96), 1, Direction.RIGHT, 3, 0);
 		addBlock(true, getLastAddedBlock(), 1, Direction.RIGHT);
 		
 		// Upper right blocks
-		addBlock(true, getBlock(45), 8, Direction.LEFT);
-		addBlock(true, getBlock(46), 1, Direction.LEFT);
+		addBlock(true, getBlock(46), 8, Direction.LEFT);
+		addBlock(true, getBlock(47), 1, Direction.LEFT);
 		addBlock(true, getLastAddedBlock(), 3, Direction.LEFT, 1, 0);
 		addBlock(true, getLastAddedBlock(), 1, Direction.LEFT, 1, 0);
-		addBlock(true, getBlock(47), 4, Direction.LEFT);
+		addBlock(true, getBlock(48), 4, Direction.LEFT);
 		addBlock(true, getLastAddedBlock(), 1, Direction.LEFT, 1, 0);
 		
 		// Floating top center blocks
-		addBlock(true, getBlock(135), 3, Direction.LEFT, 2, 0);
+		addBlock(true, getBlock(137), 3, Direction.LEFT, 3, 0);
 		
 		
 		// GOLD PILES		
-		addGoldPile(getBlock(55),3, Direction.RIGHT);
-		addGoldPile(getBlock(59));
-		addGoldPile(getBlock(104),2, Direction.RIGHT);
-		addGoldPile(getBlock(82));
-		addGoldPile(getBlock(89));
-		addGoldPile(getBlock(111));
-		addGoldPile(getBlock(113),4, Direction.LEFT, 0 , 1);
-		addGoldPile(getBlock(121));
-		addGoldPile(getBlock(121));
-		addGoldPile(getBlock(124));
-		addGoldPile(getBlock(128));
-		addGoldPile(getBlock(142));
-		
+		addGoldPile(getBlock(56),3, Direction.RIGHT);
+		addGoldPile(getBlock(60));
+		addGoldPile(getBlock(106),2, Direction.RIGHT);
+		addGoldPile(getBlock(84));
+		addGoldPile(getBlock(91));
+		addGoldPile(getBlock(113));
+		addGoldPile(getBlock(115),4, Direction.LEFT, 0 , 1);
+		addGoldPile(getBlock(123));
+		addGoldPile(getBlock(123));
+		addGoldPile(getBlock(126));
+		addGoldPile(getBlock(130));
+		addGoldPile(getBlock(144));
+	
 		// LADDERS
-		addLadder(getBlock(61), 2);
-		addLadder(getBlock(100), 4);
-		addLadder(getBlock(91), 4);
-		addLadder(getBlock(112), 2);
-		addLadder(getBlock(58), 3);
+		addLadder(getBlock(62), 2);
+		addLadder(getBlock(102), 4);
+		addLadder(getBlock(93), 4);
+		addLadder(getBlock(114), 2);
+		addLadder(getBlock(59), 3);
 		
 		addPole(getLadder(getBlock(4), Direction.RIGHT),16,Direction.RIGHT);
 		
