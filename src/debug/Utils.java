@@ -4,7 +4,6 @@ import java.awt.Point;
 
 public class Utils
 {
-
 	public Utils()
 	{
 		// TODO Auto-generated constructor stub
@@ -31,3 +30,4 @@ public class Utils
 		System.out.print("\n");
 	}
 }
+

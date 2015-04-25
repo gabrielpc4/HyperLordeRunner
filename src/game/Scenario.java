@@ -2,6 +2,7 @@ package game;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import baseclasses.GameObject;
@@ -13,10 +14,13 @@ import windows.GameManager.Direction;
 public class Scenario extends Dimension
 {
 	ArrayList<ArrayList<GameObject>> scenarioObjects;
+	public static final int NONE		= -1;
 	public static final int BLOCKS 		= 0;
 	public static final int GOLD_PILES	= 1;
 	public static final int LADDERS		= 2;
 	public static final int POLE		= 3;
+		
+	public ArrayList<GameObject> debug = new ArrayList<GameObject>();
 	
 	public Scenario()
 	{
@@ -26,7 +30,7 @@ public class Scenario extends Dimension
 		for( int i = BLOCKS; i <= POLE; i++)
 		{
 			scenarioObjects.add(new ArrayList<GameObject>());
-		}		
+		}	
 		
 		// Borders
 		addBlock(false, new Point(0,0), 17, Direction.DOWN);
@@ -95,6 +99,9 @@ public class Scenario extends Dimension
 		addLadder(getBlock(91), 4);
 		addLadder(getBlock(112), 2);
 		addLadder(getBlock(58), 3);
+		
+		addPole(getLadder(getBlock(4), Direction.RIGHT),16,Direction.RIGHT);
+		
 		updateScenarioDimensions();		
 	}
 	
@@ -137,17 +144,22 @@ public class Scenario extends Dimension
 		addGoldPile(referenceBlock, howMany, direction, 0, 0);
 	}
 	
-	private void addGoldPile(GameObject referenceBlock, int howMany, Direction direction, int firstGap, int nextGap)
+	private void addGoldPile(GameObject referenceObject, int howMany, Direction direction, int firstGap, int nextGap)
 	{
-		addObject(GOLD_PILES, referenceBlock, 1, Direction.UP, firstGap, nextGap);
-		referenceBlock = getLastAddedGoldPile();
-		addObject(GOLD_PILES, referenceBlock, howMany - 1, direction, nextGap, nextGap);
+		addObject(GOLD_PILES, referenceObject, 1, Direction.UP, firstGap, nextGap);
+		referenceObject = getLastAddedGoldPile();
+		addObject(GOLD_PILES, referenceObject, howMany - 1, direction, nextGap, nextGap);
 	}		
 	
 	private void addLadder(Block referenceBlock, int height)
 	{
 		addObject(LADDERS, referenceBlock, height, Direction.UP);
 	}	
+	
+	private void addPole(GameObject referenceObject, int length, Direction direction)
+	{
+		addObject(POLE, referenceObject, length, direction);
+	}
 	
 	private GameObject addObject(int OBJECT_TYPE, double startX, double startY)
 	{
@@ -166,7 +178,15 @@ public class Scenario extends Dimension
 			}
 			else if (OBJECT_TYPE == LADDERS)
 			{			
-				getGoldPiles().add(newObject);
+				getLadders().add(newObject);
+			}
+			else if (OBJECT_TYPE == POLE)
+			{
+				getPoles().add(newObject);
+			}
+			else
+			{
+				System.err.println("Trying to add a object of type " + OBJECT_TYPE + " but it's not included in the method: addObject(int OBJECT_TYPE, double startX, double startY) of the class: " + this.getClass().getName() );
 			}
 		}
 		
@@ -259,34 +279,21 @@ public class Scenario extends Dimension
 	public ArrayList<ArrayList<GameObject>> getAllScenarioObjects()
 	{
 		return scenarioObjects;		
-	}		
-	
-	public ArrayList<GameObject> getScenarioObject(int OBJECT_TYPE)
-	{
-		if (OBJECT_TYPE > scenarioObjects.size())
-		{
-			System.err.println("Warning: Attempt to get scenario object type: " + OBJECT_TYPE +  " at class "+ this.getClass().getName() 
-					+ ", while there is only " + getBlocks().size() 
-					+ " types(s) avaliable (max num allowed: " + (scenarioObjects.size() - 1) + ")." );
-			OBJECT_TYPE = scenarioObjects.size() - 1;		
-		}
-		return scenarioObjects.get(OBJECT_TYPE);		
-	}
-	
-	
+	}				
 			
 	public Block getBlock(int blockNumber)
 	{
-		if (blockNumber > getBlocks().size() - 1)
+		if((getBlocks().size() - 1) < 0)
+		{
+			System.err.println("Error: The blocks array at " + this.getClass().getName() + " is empty");
+			System.exit(0);
+		}
+		else if (blockNumber > getBlocks().size() - 1)
 		{
 			System.err.println("Warning: Attempt to get block number: " + blockNumber +  " at class "+ this.getClass().getName() 
 					+ ", while there is only " + getBlocks().size() 
 					+ " blocks(s) avaliable (max num allowed: " + (getBlocks().size() - 1) + ")." );
-			blockNumber = getBlocks().size() - 1;
-			if(blockNumber < 0)
-			{
-				System.exit(0);
-			}
+			blockNumber = getBlocks().size() - 1;			
 		}
 		return (Block) getBlocks().get(blockNumber);
 	}
@@ -296,20 +303,120 @@ public class Scenario extends Dimension
 		return scenarioObjects.get(BLOCKS);
 	}
 	
-	public Block getGoldPile(int goldPileNumber)
+	public GameObject getGoldPile(int goldPileNumber)
 	{
-		if (goldPileNumber > getGoldPiles().size() - 1)
+		if((getGoldPiles().size() - 1) < 0)
+		{
+			System.err.println("Error: The gold pile array at " + this.getClass().getName() + " is empty");
+			System.exit(0);
+		}
+		else if (goldPileNumber > getGoldPiles().size() - 1)
 		{
 			System.err.println("Warning: Attempt to get gold pile number: " + goldPileNumber +  " at class "+ this.getClass().getName() 
 					+ ", while there is only " + getBlocks().size() 
 					+ " gold pile(s) avaliable (max num allowed: " + (getGoldPiles().size() - 1) + ")." );
-			goldPileNumber = getGoldPiles().size() - 1;
-			if(goldPileNumber < 0)
-			{
-				System.exit(0);
-			}
+			goldPileNumber = getGoldPiles().size() - 1;		
 		}
-		return (Block) getGoldPiles().get(goldPileNumber);
+		return  getGoldPiles().get(goldPileNumber);
+	}
+	
+	public ArrayList<GameObject> getGoldPiles()
+	{
+		return scenarioObjects.get(GOLD_PILES);
+	}
+	
+	public GameObject getLadder(int ladderNumber)
+	{
+		if((getLadders().size() - 1) < 0)
+		{
+			System.err.println("Error: The ladders array at " + this.getClass().getName() + " is empty");
+			System.exit(0);
+		}
+		if (ladderNumber > getLadders().size() - 1)
+		{
+			System.err.println("Warning: Attempt to get ladder number: " + ladderNumber +  " at class "+ this.getClass().getName() 
+					+ ", while there is only " + getBlocks().size() 
+					+ " gold pile(s) avaliable (max num allowed: " + (getLadders().size() - 1) + ")." );
+			ladderNumber = getLadders().size() - 1;	
+		}
+		return  getGoldPiles().get(ladderNumber);
+	}
+	
+	public GameObject getLadder(GameObject referenceObject, Direction direction)
+	{
+		Rectangle collisionRect = new Rectangle(referenceObject.getRect());
+		
+		String directionString = "";
+						
+		switch (direction)
+		{
+		case UP:
+		{
+			collisionRect.translate(0,(int) -referenceObject.getHeight());				
+			
+			for (GameObject currentLadder : getLadders())
+			{
+				if (currentLadder.intersects(collisionRect))
+				{
+					return currentLadder;
+				}
+			}
+			directionString = "top";
+		}break;
+		case RIGHT:
+		{
+			collisionRect.translate((int)referenceObject.getWidth(),0);
+			for (GameObject currentLadder : getLadders())
+			{
+				if (currentLadder.intersects(collisionRect))
+				{
+					return currentLadder;
+				}
+			}
+			directionString = "right";
+		}break;
+		case DOWN:
+		{
+			collisionRect.translate(0,(int) referenceObject.getHeight());
+			for (GameObject currentLadder : getLadders())
+			{
+				if (currentLadder.intersects(collisionRect))
+				{
+					return currentLadder;
+				}
+			}
+			directionString = "down";
+		}break;
+		case LEFT:
+		{
+			collisionRect.translate(-(int)referenceObject.getWidth(),0);
+			for (GameObject currentLadder : getLadders())
+			{
+				if (currentLadder.intersects(collisionRect))
+				{
+					return currentLadder;
+				}
+			}
+			directionString = "left";
+		}break;		
+		default:
+		{
+			System.err.println("Warning: Incorrect direction infomed when looking for ladders");
+		}break;
+		}
+		System.err.print("Warning: No ladders are on the " + directionString + " of the refered object");
+		return (new StaticSprite());		
+	}
+	
+	public ArrayList<GameObject> getLadders()
+	{
+		return scenarioObjects.get(LADDERS);
+	}
+	
+	
+	public ArrayList<GameObject> getPoles()
+	{
+		return scenarioObjects.get(POLE);
 	}
 	
 	public Block getLastAddedBlock()
@@ -332,9 +439,17 @@ public class Scenario extends Dimension
 		return getGoldPiles().get(getGoldPiles().size() - 1);
 	}
 	
-	public ArrayList<GameObject> getGoldPiles()
+	
+	public ArrayList<GameObject> getScenarioObject(int OBJECT_TYPE)
 	{
-		return scenarioObjects.get(GOLD_PILES);
+		if (OBJECT_TYPE > scenarioObjects.size())
+		{
+			System.err.println("Warning: Attempt to get scenario object type: " + OBJECT_TYPE +  " at class "+ this.getClass().getName() 
+					+ ", while there is only " + getBlocks().size() 
+					+ " types(s) avaliable (max num allowed: " + (scenarioObjects.size() - 1) + ")." );
+			OBJECT_TYPE = scenarioObjects.size() - 1;		
+		}
+		return scenarioObjects.get(OBJECT_TYPE);		
 	}
 	
 	private void updateScenarioDimensions() 

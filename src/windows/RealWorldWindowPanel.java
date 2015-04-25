@@ -46,10 +46,10 @@ public class RealWorldWindowPanel extends JPanel implements Runnable
 		
 		for (GameObject currentObject : gameObjects)
 		{
-			currentObject.draw(currentObject.getX(), currentObject.getY(), g);
+			currentObject.draw(g);
 		}
 		
-		player.draw(player.getX(), player.getY(), g);
+		player.draw(g);
 		
 		g.setColor(Color.red);
 		g.drawRect((int)camera.getCameraPositon().getX(), (int)camera.getCameraPositon().getY(),(int) camera.getWidth(), (int)camera.getHeight());

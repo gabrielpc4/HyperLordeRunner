@@ -20,8 +20,7 @@ import listeners.MyKeyListener;
 public class GameManager extends JPanel implements Runnable
 {	
 	private Camera camera;
-	public static enum Direction {UP,RIGHT,DOWN,LEFT,HORIZONTAL,VERTICAL};
-	
+	public static enum Direction {UP,RIGHT,DOWN,LEFT,HORIZONTAL,VERTICAL};	
 	private ArrayList<GameObject> enemies;
 	ArrayList<GameObject> gameObjects;
 	private Player player;

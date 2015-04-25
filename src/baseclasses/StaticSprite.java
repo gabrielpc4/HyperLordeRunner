@@ -1,6 +1,7 @@
 package baseclasses;
 
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -10,32 +11,39 @@ import javax.imageio.ImageIO;
 @SuppressWarnings("serial")
 public class StaticSprite extends GameObject
 {
-	BufferedImage img;
-	
+	private BufferedImage img;
+		
 	public StaticSprite()
 	{
 		this(0,0);		
 	}
 	
-	public StaticSprite(String imgFileName, double startX, double startY)
+	public StaticSprite(Rectangle rect)
 	{		
-		
+		this(rect.getX(), rect.getY());
+		this.setBounds(rect);
 	}
 	
 	public StaticSprite(double startX, double startY)
 	{		
-		super(startX,startY);
+		super(startX,startY, game.Scenario.NONE);
+		
+	}
+	
+	public StaticSprite(double startX, double startY, int OBJECT_TYPE)
+	{		
+		super(startX,startY, OBJECT_TYPE);
 		img = null;
 	}
 	
 	public StaticSprite(int OBJECT_TYPE, double startX, double startY)
-	{		
+	{				
+		this(startX, startY, OBJECT_TYPE);
 		
-		this(startX, startY);
 		switch (OBJECT_TYPE)
 		{
 			case (game.Scenario.GOLD_PILES):
-			{
+			{				
 				loadImg("gold.png");
 			}break;
 			case (game.Scenario.LADDERS):
