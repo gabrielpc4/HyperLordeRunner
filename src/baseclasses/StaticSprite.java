@@ -1,5 +1,6 @@
 package baseclasses;
 
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,15 +18,41 @@ public class StaticSprite extends GameObject
 	}
 	
 	public StaticSprite(String imgFileName, double startX, double startY)
-	{
-		this(startX, startY);		
-		loadImg(imgFileName);
+	{		
+		
 	}
 	
 	public StaticSprite(double startX, double startY)
 	{		
 		super(startX,startY);
 		img = null;
+	}
+	
+	public StaticSprite(int OBJECT_TYPE, double startX, double startY)
+	{		
+		
+		this(startX, startY);
+		switch (OBJECT_TYPE)
+		{
+			case (game.Scenario.GOLD_PILES):
+			{
+				loadImg("gold.png");
+			}break;
+			case (game.Scenario.LADDERS):
+			{
+				loadImg("ladder.png");
+			}break;
+			case (game.Scenario.POLE):
+			{
+				loadImg("pole.png");
+			}break;
+			default:
+			{
+				System.err.println("Error: Informed to load image of the class " + this.getClass().getName() + " of object type: " + OBJECT_TYPE + " and it does not exists");
+				System.exit(0);
+			}break;
+		}
+				
 	}
 	
 	@Override

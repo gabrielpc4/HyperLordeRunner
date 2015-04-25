@@ -26,10 +26,8 @@ public class Block extends AnimatedSprite
 	public Block(double startX, double startY, boolean destructible)
 	{		
 		super("block", startX, startY);
-		
-		
-		setDestructible(destructible);
-		
+				
+		setDestructible(destructible);		
 		freezeAnimation();
 		
 		number = instanceCounter;	
@@ -46,8 +44,7 @@ public class Block extends AnimatedSprite
 			g.setFont(new Font("Arial", Font.PLAIN, fontSize)); 
 			g.setColor(Color.white);
 			g.drawString(String.valueOf(number), (int)x + 5, (int)y + 15);
-		}
-		
+		}	
 	}
 	
 	public int getNumber()

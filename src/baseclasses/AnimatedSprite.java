@@ -30,7 +30,7 @@ public class AnimatedSprite extends GameObject
 	{
 		this(startX, startY);
 		loadImg(imgsFolderName);		
-	}	
+	}
 
 	public AnimatedSprite(double startX, double startY)
 	{

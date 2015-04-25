@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import baseclasses.GameObject;
+import baseclasses.StaticSprite;
 import windows.MainWindowApplet;
 import windows.GameManager.Direction;
 
@@ -15,13 +16,14 @@ public class Scenario extends Dimension
 	public static final int BLOCKS 		= 0;
 	public static final int GOLD_PILES	= 1;
 	public static final int LADDERS		= 2;
+	public static final int POLE		= 3;
 	
 	public Scenario()
 	{
 		super(MainWindowApplet.WINDOW_WIDTH, MainWindowApplet.WINDOW_HEIGHT);
 	
 		scenarioObjects = new ArrayList<ArrayList<GameObject>>();
-		for( int i = BLOCKS; i <= LADDERS; i++)
+		for( int i = BLOCKS; i <= POLE; i++)
 		{
 			scenarioObjects.add(new ArrayList<GameObject>());
 		}		
@@ -98,7 +100,7 @@ public class Scenario extends Dimension
 	
 	private void addBlock(boolean destructible, GameObject referenceObject,  int howMany, Direction direction, int firstGap, int nextGaps)
 	{
-		addObject(Block.class, referenceObject, howMany, direction, firstGap, nextGaps);
+		addObject(BLOCKS, referenceObject, howMany, direction, firstGap, nextGaps);
 		
 		for (int i = 0; i < howMany ; i++)
 		{
@@ -137,50 +139,53 @@ public class Scenario extends Dimension
 	
 	private void addGoldPile(GameObject referenceBlock, int howMany, Direction direction, int firstGap, int nextGap)
 	{
-		addObject(GoldPile.class, referenceBlock, 1, Direction.UP, firstGap, nextGap);
+		addObject(GOLD_PILES, referenceBlock, 1, Direction.UP, firstGap, nextGap);
 		referenceBlock = getLastAddedGoldPile();
-		addObject(GoldPile.class, referenceBlock, howMany - 1, direction, nextGap, nextGap);
+		addObject(GOLD_PILES, referenceBlock, howMany - 1, direction, nextGap, nextGap);
 	}		
 	
 	private void addLadder(Block referenceBlock, int height)
 	{
-		addObject(Ladder.class, referenceBlock, height, Direction.UP);
+		addObject(LADDERS, referenceBlock, height, Direction.UP);
 	}	
 	
-	private GameObject addObject(Class<? extends GameObject> objectClass, double startX, double startY)
+	private GameObject addObject(int OBJECT_TYPE, double startX, double startY)
 	{
 		GameObject newObject = null;
-		if (objectClass == Block.class)
+		if (OBJECT_TYPE == BLOCKS)
 		{
 			newObject = new Block(startX,startY); 
 			getBlocks().add(newObject);
 		}
-		else if (objectClass == GoldPile.class)
+		else 
 		{
-			newObject = new GoldPile(startX, startY);
-			getGoldPiles().add(newObject);
+			newObject = new StaticSprite(OBJECT_TYPE, startX, startY);
+			if (OBJECT_TYPE == GOLD_PILES)			
+			{				
+				getGoldPiles().add(newObject);
+			}
+			else if (OBJECT_TYPE == LADDERS)
+			{			
+				getGoldPiles().add(newObject);
+			}
 		}
-		else if (objectClass == Ladder.class)
-		{
-			newObject = new Ladder(startX, startY);
-			getGoldPiles().add(newObject);
-		}
+		
 		return newObject;
 	}		
 		
 	@SuppressWarnings("unused")
-	private void addObject(Class<? extends GameObject> objectClass, double startX, double startY, int howMany, Direction direction)
+	private void addObject(int OBJECT_TYPE, double startX, double startY, int howMany, Direction direction)
 	{
-		GameObject firstObject = addObject(objectClass, startX, startY);
-		addObject(objectClass, firstObject, howMany, direction);
+		GameObject firstObject = addObject(OBJECT_TYPE, startX, startY);
+		addObject(OBJECT_TYPE, firstObject, howMany, direction);
 	}
 	
-	private void addObject(Class<? extends GameObject> objectClass, GameObject referenceObject, int howMany, Direction direction)
+	private void addObject(int OBJECT_TYPE, GameObject referenceObject, int howMany, Direction direction)
 	{
-		addObject(objectClass, referenceObject, howMany, direction, 0, 0);
+		addObject(OBJECT_TYPE, referenceObject, howMany, direction, 0, 0);
 	}
 
-	private void addObject(Class<? extends GameObject> objectClass, GameObject referenceObject, int howMany, Direction direction, int firstGap, int nextGaps)
+	private void addObject(int OBJECT_TYPE, GameObject referenceObject, int howMany, Direction direction, int firstGap, int nextGaps)
 	{	
 		int x = (int)referenceObject.getX();
 		int y = (int)referenceObject.getY();
@@ -246,7 +251,7 @@ public class Scenario extends Dimension
 				x = 0;
 			}
 			
-			newObject = addObject(objectClass, x, y);			
+			newObject = addObject(OBJECT_TYPE, x, y);			
 			referenceObject = newObject;
 		}			
 	}
@@ -317,14 +322,14 @@ public class Scenario extends Dimension
 		return (Block) getBlocks().get(getBlocks().size() - 1);
 	}
 	
-	public GoldPile getLastAddedGoldPile()
+	public GameObject getLastAddedGoldPile()
 	{
 		if (getGoldPiles().size() - 1 < 0)
 		{
 			System.err.println("Error: The gold pile array is empty");
 			System.exit(0);
 		}
-		return (GoldPile) getGoldPiles().get(getGoldPiles().size() - 1);
+		return getGoldPiles().get(getGoldPiles().size() - 1);
 	}
 	
 	public ArrayList<GameObject> getGoldPiles()
