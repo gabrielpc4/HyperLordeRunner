@@ -45,10 +45,10 @@ public class GameManager extends JPanel implements Runnable
 					
 		scenario = new Scenario();
 				
-		player = new Player(300,300);
+		player = new Player(scenario.getBlock(93));
 		enemies = new ArrayList<GameObject>();
-		enemies.add(new Enemy(100,100));
-		enemies.add(new Enemy(200,200));
+		enemies.add(new Enemy(scenario.getBlock(134)));
+		enemies.add(new Enemy(scenario.getBlock(110)));		
 					
 		gameObjects = new ArrayList<ArrayList<GameObject>>();
 		gameObjects.add(scenario.getBlocks());
@@ -70,7 +70,7 @@ public class GameManager extends JPanel implements Runnable
 	
 	private void moveAll()
 	{		
-		player.move();				
+		player.move();
 	}
 	
 	

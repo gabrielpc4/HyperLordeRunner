@@ -26,10 +26,10 @@ public class AnimatedSprite extends GameObject
 		this(0,0);
 	}
 	
-	public AnimatedSprite(String imgsFolderPath, double startX, double startY)
+	public AnimatedSprite(String imgsFolderName, double startX, double startY)
 	{
 		this(startX, startY);
-		loadImg(imgsFolderPath);		
+		loadImg(imgsFolderName);		
 	}	
 
 	public AnimatedSprite(double startX, double startY)
@@ -77,6 +77,11 @@ public class AnimatedSprite extends GameObject
 	public void freezeAnimation()
 	{
 		animate = false;
+	}
+	
+	public int getAnimationFrame()
+	{
+		return animationFrame;
 	}
 			
 	@Override

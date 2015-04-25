@@ -9,6 +9,16 @@ public class Enemy extends AnimatedSprite
 	{		
 		this(0,0);
 	}
+	
+	public Enemy(Block block)
+	{
+		this(0,0);
+		
+		double startX = block.getX();
+		double startY = block.getY() - block.getHeight();	
+		
+		this.translate((int)startX, (int)startY);				
+	}
 
 	public Enemy(int startX, int startY)
 	{

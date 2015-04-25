@@ -39,24 +39,12 @@ public class Camera extends JPanel implements Runnable
 		this.player = player;
 		this.gameObjects = gameObjects;
 		this.scenarioDimension = scenarioDimension;
-		cameraPositon = new Point(0,0); 	
+		cameraPositon = new Point(0,0);							
+		updateCameraPosition();				
 		thread = new Thread(this);		
 		thread.start();		
 	}
-		
-	private void drawObjects(Graphics g)
-	{	
-		for (ArrayList<GameObject> arrayListOfObjects : gameObjects)
-		{
-			for (GameObject currentObject : arrayListOfObjects)
-			{	
-				double diffX = cameraPositon.getX();
-				double diffY = cameraPositon.getY();				
-				currentObject.draw(currentObject.getX() - diffX, currentObject.getY() - diffY, g);
-			}
-		}			
-	}
-
+				
 	private void calculatePlayerDrawPos()
 	{			
 		if (player.getCenterX() > (this.getWidth()/2.0) && player.getCenterX() < (scenarioDimension.getWidth() - (this.getWidth()/2.0)))
@@ -67,8 +55,7 @@ public class Camera extends JPanel implements Runnable
 		{
 			followingPlayerX = false;
 		}
-				
-		
+						
 		if (player.getCenterY() > (this.getHeight()/2.0) && player.getCenterY() < (scenarioDimension.getHeight() - (this.getHeight()/2.0)))
 		{
 			followingPlayerY = true;
@@ -80,12 +67,7 @@ public class Camera extends JPanel implements Runnable
 
 		if(followingPlayerX)
 		{
-			playerDrawPosX = this.getPanelCenterX() - (player.getWidth()/2.0);
-			int diffX = (int)(player.getCenterX() - this.getCenterX());
-			if (Math.abs(diffX) > 0)
-			{
-				cameraPositon.translate(diffX,0);
-			}		
+			playerDrawPosX = this.getPanelCenterX() - (player.getWidth()/2.0);			
 		}
 		else
 		{
@@ -101,12 +83,7 @@ public class Camera extends JPanel implements Runnable
 		
 		if (followingPlayerY)
 		{
-			playerDrawPosY = this.getPanelCenterY() - (player.getHeight()/2.0);
-			int diffY = (int)(player.getCenterY() - this.getCenterY());
-			if (Math.abs(diffY) > 0)
-			{
-				cameraPositon.translate(0, diffY);				
-			}				
+			playerDrawPosY = this.getPanelCenterY() - (player.getHeight()/2.0);					
 		}
 		else
 		{
@@ -120,6 +97,19 @@ public class Camera extends JPanel implements Runnable
 				playerDrawPosY = player.getY() - cameraPositon.getY();				
 			}		
 		}	
+	}
+	
+	private void drawObjects(Graphics g)
+	{	
+		for (ArrayList<GameObject> arrayListOfObjects : gameObjects)
+		{
+			for (GameObject currentObject : arrayListOfObjects)
+			{	
+				double diffX = cameraPositon.getX();
+				double diffY = cameraPositon.getY();				
+				currentObject.draw(currentObject.getX() - diffX, currentObject.getY() - diffY, g);
+			}
+		}			
 	}
 
 	
@@ -158,7 +148,8 @@ public class Camera extends JPanel implements Runnable
 		
 		calculatePlayerDrawPos();	
 		player.draw(playerDrawPosX, playerDrawPosY, g);
-				
+		
+		updateCameraPosition();				
 	}
 
 	public void run()
@@ -176,6 +167,44 @@ public class Camera extends JPanel implements Runnable
 			}
 		}		
 	}
-
 	
+	private void updateCameraPosition() 
+	{
+		int diffX = (int)(this.getCenterX() - player.getCenterX());
+		
+		if (cameraPositon.getX() - diffX < 0)
+		{
+			cameraPositon.setLocation(0,cameraPositon.getY());
+		}
+		else if ((cameraPositon.getX() + this.getWidth()) - diffX > scenarioDimension.getWidth())
+		{
+			cameraPositon.setLocation(scenarioDimension.getWidth() - this.getWidth(),cameraPositon.getY());
+		}
+		else
+		{
+			if (Math.abs(diffX) > 0)
+			{
+				cameraPositon.translate(-diffX,0);
+			}
+		}
+			
+				
+		int diffY = (int)(this.getCenterY() - player.getCenterY());
+		
+		if (cameraPositon.getY() - diffY < 0)
+		{
+			cameraPositon.setLocation(cameraPositon.getX(), 0);
+		}
+		else if ((cameraPositon.getY() + this.getHeight()) - diffY > scenarioDimension.getHeight())
+		{
+			cameraPositon.setLocation(cameraPositon.getX(), scenarioDimension.getHeight() - this.getHeight());
+		}
+		else
+		{
+			if (Math.abs(diffY) > 0)
+			{
+				cameraPositon.translate(0, -diffY);				
+			}	
+		}		
+	}
 }
