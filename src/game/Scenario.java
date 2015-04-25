@@ -8,9 +8,6 @@ import baseclasses.GameObject;
 import windows.MainWindowApplet;
 import windows.GameManager.Direction;
 
-
-
-
 @SuppressWarnings("serial")
 public class Scenario extends Dimension
 {
@@ -80,6 +77,7 @@ public class Scenario extends Dimension
 		addGoldPile(getBlock(55),3, Direction.RIGHT);
 		addGoldPile(getBlock(59));
 		addGoldPile(getBlock(104),2, Direction.RIGHT);
+		addGoldPile(getBlock(82));
 		addGoldPile(getBlock(89));
 		addGoldPile(getBlock(111));
 		addGoldPile(getBlock(113),4, Direction.LEFT, 0 , 1);
@@ -88,6 +86,13 @@ public class Scenario extends Dimension
 		addGoldPile(getBlock(124));
 		addGoldPile(getBlock(128));
 		addGoldPile(getBlock(142));
+		
+		// LADDERS
+		addLadder(getBlock(61), 2);
+		addLadder(getBlock(100), 4);
+		addLadder(getBlock(91), 4);
+		addLadder(getBlock(112), 2);
+		addLadder(getBlock(58), 3);
 		updateScenarioDimensions();		
 	}
 	
@@ -135,7 +140,12 @@ public class Scenario extends Dimension
 		addObject(GoldPile.class, referenceBlock, 1, Direction.UP, firstGap, nextGap);
 		referenceBlock = getLastAddedGoldPile();
 		addObject(GoldPile.class, referenceBlock, howMany - 1, direction, nextGap, nextGap);
-	}
+	}		
+	
+	private void addLadder(Block referenceBlock, int height)
+	{
+		addObject(Ladder.class, referenceBlock, height, Direction.UP);
+	}	
 	
 	private GameObject addObject(Class<? extends GameObject> objectClass, double startX, double startY)
 	{
@@ -145,9 +155,14 @@ public class Scenario extends Dimension
 			newObject = new Block(startX,startY); 
 			getBlocks().add(newObject);
 		}
-		else
+		else if (objectClass == GoldPile.class)
 		{
 			newObject = new GoldPile(startX, startY);
+			getGoldPiles().add(newObject);
+		}
+		else if (objectClass == Ladder.class)
+		{
+			newObject = new Ladder(startX, startY);
 			getGoldPiles().add(newObject);
 		}
 		return newObject;
@@ -209,27 +224,25 @@ public class Scenario extends Dimension
 			
 			if (y < 0)
 			{
-				for (GameObject block :  getBlocks())
+				for (ArrayList<GameObject> arrayOfObjects :  getAllScenarioObjects())
 				{
-					block.translate(0, -y);
-				}
-				for (GameObject goldPile : getGoldPiles())
-				{
-					goldPile.translate(0, -y);
-				}
+					for (GameObject scenarioObject :  arrayOfObjects)
+					{
+						scenarioObject.translate(0, -y);
+					}					
+				}				
 				y = 0;
 			}
 			
 			if (x < 0)
 			{
-				for (GameObject block : getBlocks())
-				{			
-					block.translate(-x, 0);
-				}
-				for (GameObject goldPile : getGoldPiles())
+				for (ArrayList<GameObject> arrayOfObjects :  getAllScenarioObjects())
 				{
-					goldPile.translate(-x, 0);
-				}
+					for (GameObject scenarioObject :  arrayOfObjects)
+					{
+						scenarioObject.translate(-x, 0);
+					}					
+				}	
 				x = 0;
 			}
 			
