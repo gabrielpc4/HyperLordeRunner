@@ -21,7 +21,7 @@ public class Camera extends JPanel implements Runnable
 	boolean followingPlayerX;
 	boolean followingPlayerY;
 	private Player player;
-	private ArrayList<ArrayList<GameObject>> gameObjects;
+	private ArrayList<GameObject> gameObjects;
 	private Dimension scenarioDimension;	
 	private Thread thread;
 	
@@ -31,8 +31,7 @@ public class Camera extends JPanel implements Runnable
 		setSize(800, 600);
 	}
 	
-	public Camera(int w, int h, Player player, ArrayList<ArrayList<GameObject>> gameObjects,
-	Dimension scenarioDimension)
+	public Camera(int w, int h, Player player,ArrayList<GameObject> gameObjects, Dimension scenarioDimension)
 	{
 		super();
 		setSize(w, h);
@@ -100,15 +99,12 @@ public class Camera extends JPanel implements Runnable
 	}
 	
 	private void drawObjects(Graphics g)
-	{	
-		for (ArrayList<GameObject> arrayListOfObjects : gameObjects)
-		{
-			for (GameObject currentObject : arrayListOfObjects)
-			{	
-				double diffX = cameraPositon.getX();
-				double diffY = cameraPositon.getY();				
-				currentObject.draw(currentObject.getX() - diffX, currentObject.getY() - diffY, g);
-			}
+	{			
+		for (GameObject currentObject : gameObjects)
+		{	
+			double diffX = cameraPositon.getX();
+			double diffY = cameraPositon.getY();				
+			currentObject.draw(currentObject.getX() - diffX, currentObject.getY() - diffY, g);
 		}			
 	}
 

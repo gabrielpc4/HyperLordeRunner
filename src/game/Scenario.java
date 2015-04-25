@@ -14,15 +14,20 @@ import windows.GameManager.Direction;
 @SuppressWarnings("serial")
 public class Scenario extends Dimension
 {
-	ArrayList<GameObject> blocks;
-	ArrayList<GameObject> goldPiles;		
+	ArrayList<ArrayList<GameObject>> scenarioObjects;
+	public static final int BLOCKS 		= 0;
+	public static final int GOLD_PILES	= 1;
+	public static final int LADDERS		= 2;
 	
 	public Scenario()
 	{
 		super(MainWindowApplet.WINDOW_WIDTH, MainWindowApplet.WINDOW_HEIGHT);
 	
-		blocks = new ArrayList<GameObject>();		
-		goldPiles = new ArrayList<GameObject>();
+		scenarioObjects = new ArrayList<ArrayList<GameObject>>();
+		for( int i = BLOCKS; i <= LADDERS; i++)
+		{
+			scenarioObjects.add(new ArrayList<GameObject>());
+		}		
 		
 		// Borders
 		addBlock(false, new Point(0,0), 17, Direction.DOWN);
@@ -103,7 +108,7 @@ public class Scenario extends Dimension
 	
 	private void addBlock(boolean destructible, double startX, double startY, int howMany, Direction direction)
 	{
-		blocks.add(new Block(startX, startY, false));
+		scenarioObjects.get(BLOCKS).add(new Block(startX, startY, false));
 		if (howMany > 1)
 		{
 			addBlock(destructible, getLastAddedBlock(), howMany, direction);
@@ -138,12 +143,12 @@ public class Scenario extends Dimension
 		if (objectClass == Block.class)
 		{
 			newObject = new Block(startX,startY); 
-			blocks.add(newObject);
+			getBlocks().add(newObject);
 		}
 		else
 		{
 			newObject = new GoldPile(startX, startY);
-			goldPiles.add(newObject);
+			getGoldPiles().add(newObject);
 		}
 		return newObject;
 	}		
@@ -204,11 +209,11 @@ public class Scenario extends Dimension
 			
 			if (y < 0)
 			{
-				for (GameObject block : blocks)
+				for (GameObject block :  getBlocks())
 				{
 					block.translate(0, -y);
 				}
-				for (GameObject goldPile : goldPiles)
+				for (GameObject goldPile : getGoldPiles())
 				{
 					goldPile.translate(0, -y);
 				}
@@ -217,11 +222,11 @@ public class Scenario extends Dimension
 			
 			if (x < 0)
 			{
-				for (GameObject block : blocks)
+				for (GameObject block : getBlocks())
 				{			
 					block.translate(-x, 0);
 				}
-				for (GameObject goldPile : goldPiles)
+				for (GameObject goldPile : getGoldPiles())
 				{
 					goldPile.translate(-x, 0);
 				}
@@ -232,79 +237,97 @@ public class Scenario extends Dimension
 			referenceObject = newObject;
 		}			
 	}
-		
+	
+	public ArrayList<ArrayList<GameObject>> getAllScenarioObjects()
+	{
+		return scenarioObjects;		
+	}		
+	
+	public ArrayList<GameObject> getScenarioObject(int OBJECT_TYPE)
+	{
+		if (OBJECT_TYPE > scenarioObjects.size())
+		{
+			System.err.println("Warning: Attempt to get scenario object type: " + OBJECT_TYPE +  " at class "+ this.getClass().getName() 
+					+ ", while there is only " + getBlocks().size() 
+					+ " types(s) avaliable (max num allowed: " + (scenarioObjects.size() - 1) + ")." );
+			OBJECT_TYPE = scenarioObjects.size() - 1;		
+		}
+		return scenarioObjects.get(OBJECT_TYPE);		
+	}
+	
+	
 			
 	public Block getBlock(int blockNumber)
 	{
-		if (blockNumber > blocks.size() - 1)
+		if (blockNumber > getBlocks().size() - 1)
 		{
 			System.err.println("Warning: Attempt to get block number: " + blockNumber +  " at class "+ this.getClass().getName() 
-					+ ", while there is only " + blocks.size() 
-					+ " blocks(s) avaliable (max num allowed: " + (blocks.size() - 1) + ")." );
-			blockNumber = blocks.size() - 1;
+					+ ", while there is only " + getBlocks().size() 
+					+ " blocks(s) avaliable (max num allowed: " + (getBlocks().size() - 1) + ")." );
+			blockNumber = getBlocks().size() - 1;
 			if(blockNumber < 0)
 			{
 				System.exit(0);
 			}
 		}
-		return (Block) blocks.get(blockNumber);
+		return (Block) getBlocks().get(blockNumber);
 	}
 	
 	public ArrayList<GameObject> getBlocks()
 	{
-		return blocks;
+		return scenarioObjects.get(BLOCKS);
 	}
 	
 	public Block getGoldPile(int goldPileNumber)
 	{
-		if (goldPileNumber > goldPiles.size() - 1)
+		if (goldPileNumber > getGoldPiles().size() - 1)
 		{
 			System.err.println("Warning: Attempt to get gold pile number: " + goldPileNumber +  " at class "+ this.getClass().getName() 
-					+ ", while there is only " + blocks.size() 
-					+ " gold pile(s) avaliable (max num allowed: " + (goldPiles.size() - 1) + ")." );
-			goldPileNumber = goldPiles.size() - 1;
+					+ ", while there is only " + getBlocks().size() 
+					+ " gold pile(s) avaliable (max num allowed: " + (getGoldPiles().size() - 1) + ")." );
+			goldPileNumber = getGoldPiles().size() - 1;
 			if(goldPileNumber < 0)
 			{
 				System.exit(0);
 			}
 		}
-		return (Block) goldPiles.get(goldPileNumber);
+		return (Block) getGoldPiles().get(goldPileNumber);
 	}
 	
 	public Block getLastAddedBlock()
 	{
-		if (blocks.size() - 1 < 0)
+		if (getBlocks().size() - 1 < 0)
 		{
 			System.err.println("Error: The blocks array is empty");
 			System.exit(0);
 		}
-		return (Block) blocks.get(blocks.size() - 1);
+		return (Block) getBlocks().get(getBlocks().size() - 1);
 	}
 	
 	public GoldPile getLastAddedGoldPile()
 	{
-		if (goldPiles.size() - 1 < 0)
+		if (getGoldPiles().size() - 1 < 0)
 		{
 			System.err.println("Error: The gold pile array is empty");
 			System.exit(0);
 		}
-		return (GoldPile) goldPiles.get(goldPiles.size() - 1);
+		return (GoldPile) getGoldPiles().get(getGoldPiles().size() - 1);
 	}
 	
 	public ArrayList<GameObject> getGoldPiles()
 	{
-		return goldPiles;
+		return scenarioObjects.get(GOLD_PILES);
 	}
 	
 	private void updateScenarioDimensions() 
 	{
-		if (blocks.size() > 0)
+		if (getBlocks().size() > 0)
 		{
 			double smallestX = java.lang.Double.POSITIVE_INFINITY;
 			double smallestY = java.lang.Double.POSITIVE_INFINITY;
 			double biggestX = java.lang.Double.NEGATIVE_INFINITY;
 			double biggestY = java.lang.Double.NEGATIVE_INFINITY;
-			for (GameObject currentBlock : blocks)
+			for (GameObject currentBlock : getBlocks())
 			{
 				if (currentBlock.getX() < smallestX)
 				{
@@ -326,8 +349,8 @@ public class Scenario extends Dimension
 					biggestY = currentBlock.getY();
 				}
 			}		
-			double width = ((biggestX + blocks.get(0).getWidth())- smallestX) ;
-			double height = ((biggestY + blocks.get(0).getHeight()) - smallestY) ;
+			double width = ((biggestX + getBlocks().get(0).getWidth())- smallestX) ;
+			double height = ((biggestY + getBlocks().get(0).getHeight()) - smallestY) ;
 			this.setSize((int)width , (int)height);			
 		
 		}

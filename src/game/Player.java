@@ -13,19 +13,14 @@ public class Player extends AnimatedSprite
 		this(0,0);
 	}
 
-	public Player(int startX, int startY)
+	public Player(double startX, double startY)
 	{
 		super("player", startX, startY);		
 	}
 	
 	public Player(Block block)
 	{
-		this(0,0);
-		
-		double startX = block.getX();
-		double startY = block.getY() - block.getHeight();	
-		
-		this.translate((int)startX, (int)startY);				
+		this(block.getX(),block.getY() - block.getHeight());				
 	}
 	
 	public void move(Direction direction)

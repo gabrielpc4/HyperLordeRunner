@@ -22,6 +22,12 @@ public abstract class GameObject extends Rectangle
 	{
 		g.drawImage(this.getImg(), (int)x, (int)y, null);
 	}
+	
+	public GameObject(GameObject object)
+	{
+		this(object.getX(),object.getY() - object.getHeight());			
+	}
+	
 	public abstract void loadImg(String file);
 	public abstract BufferedImage getImg();
 	

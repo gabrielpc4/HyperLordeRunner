@@ -12,15 +12,10 @@ public class Enemy extends AnimatedSprite
 	
 	public Enemy(Block block)
 	{
-		this(0,0);
-		
-		double startX = block.getX();
-		double startY = block.getY() - block.getHeight();	
-		
-		this.translate((int)startX, (int)startY);				
+		this(block.getX(),block.getY() - block.getHeight());				
 	}
 
-	public Enemy(int startX, int startY)
+	public Enemy(double startX, double startY)
 	{
 		super("enemy", startX, startY);	
 	}

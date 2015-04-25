@@ -21,8 +21,9 @@ public class GameManager extends JPanel implements Runnable
 {	
 	private Camera camera;
 	public static enum Direction {UP,RIGHT,DOWN,LEFT,HORIZONTAL,VERTICAL};
+	
 	private ArrayList<GameObject> enemies;
-	ArrayList<ArrayList<GameObject>> gameObjects;
+	ArrayList<GameObject> gameObjects;
 	private Player player;
 	private MyKeyListener myKeyListener;
 	private Scenario scenario;
@@ -50,10 +51,14 @@ public class GameManager extends JPanel implements Runnable
 		enemies.add(new Enemy(scenario.getBlock(134)));
 		enemies.add(new Enemy(scenario.getBlock(110)));		
 					
-		gameObjects = new ArrayList<ArrayList<GameObject>>();
-		gameObjects.add(scenario.getBlocks());
-		gameObjects.add(scenario.getGoldPiles());
-		gameObjects.add(enemies);
+		gameObjects = new ArrayList<GameObject>();
+		for (ArrayList<GameObject> arrayOfObjects : scenario.getAllScenarioObjects())
+		{
+			for (GameObject scenarioObject : arrayOfObjects)
+			{
+				gameObjects.add(scenarioObject);
+			}		
+		}				
 		
 		camera = new Camera(WINDOW_WIDTH, WINDOW_HEIGHT, player, gameObjects, scenario.getSize());		
 		this.add(camera);

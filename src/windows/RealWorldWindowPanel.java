@@ -16,12 +16,12 @@ import listeners.MyKeyListener;
 public class RealWorldWindowPanel extends JPanel implements Runnable 
 {
 	private Player player;
-	private ArrayList<ArrayList<GameObject>> gameObjects;	
+	private ArrayList<GameObject> gameObjects;	
 	private Thread thread;	
 	private Camera camera;
 	private MyKeyListener myKeyListener;
 	
-	public RealWorldWindowPanel(Player player, ArrayList<ArrayList<GameObject>> gameObjects, Scenario scenario, Camera camera)
+	public RealWorldWindowPanel(Player player, ArrayList<GameObject> gameObjects, Scenario scenario, Camera camera)
 	{		
 		super();
 		this.player = player;
@@ -43,13 +43,12 @@ public class RealWorldWindowPanel extends JPanel implements Runnable
 		g.setColor(Color.white);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());	
 		
-		for (ArrayList<GameObject> arrayOfObjects : gameObjects)
+		
+		for (GameObject currentObject : gameObjects)
 		{
-			for (GameObject currentObject : arrayOfObjects)
-			{
-				currentObject.draw(currentObject.getX(), currentObject.getY(), g);
-			}
+			currentObject.draw(currentObject.getX(), currentObject.getY(), g);
 		}
+		
 		player.draw(player.getX(), player.getY(), g);
 		
 		g.setColor(Color.red);
